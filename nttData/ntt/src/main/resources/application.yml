@@ -1,0 +1,26 @@
+###-----------------DB-CONFIGURATION-------------------###
+#spring.jpa.database=POSTGRESQL
+#spring.datasource.platform=postgresql
+###---------------DB-SOURCE-CREDENTIALS-----------------###
+#spring.datasource.url=jdbc:postgresql://localhost:5432/ntt_persons
+#spring.datasource.username=root
+#spring.datasource.password=toor
+
+#spring.jpa.show-sql=true
+#spring.jpa.generate-ddl=true
+#spring.jpa.hibernate.ddl-auto=create-drop
+#spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true   
+server:
+    port: 8080
+spring:
+    application:
+        name: servicio
+    datasource:
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://localhost:5432/ntt_persons
+        username: root
+        password: toor
+    jpa:
+        show-sql: true
+    messages:
+        encoding: UTF-8

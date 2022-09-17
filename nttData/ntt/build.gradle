@@ -1,0 +1,48 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.3'
+	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+	id 'java'
+	id 'war'
+}
+
+group = 'com.servicio'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext{
+	orgOpenapiVersion = '1.6.11'
+	orgMapstructVersion = '1.5.2.Final'
+}
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor "org.mapstruct:mapstruct-processor:${orgMapstructVersion}"
+	annotationProcessor 'org.projectlombok:lombok'
+
+	implementation "org.springdoc:springdoc-openapi-ui:${orgOpenapiVersion}"
+	implementation "org.mapstruct:mapstruct:${orgMapstructVersion}"
+
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	runtimeOnly 'org.postgresql:postgresql'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testImplementation 'org.junit.platform:junit-platform-engine:1.6.2'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
