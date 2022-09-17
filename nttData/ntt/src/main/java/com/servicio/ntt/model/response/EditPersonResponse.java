@@ -15,7 +15,7 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ActualizaPersonResponse {
+public class EditPersonResponse {
     
     private String codigoPersona;
 

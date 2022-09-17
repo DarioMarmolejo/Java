@@ -1,6 +1,8 @@
 package com.servicio.ntt.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +12,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.servicio.ntt.constant.Constants;
+import com.servicio.ntt.constant.PersonConstants;
 import com.servicio.ntt.model.entity.PersonEntity;
+import com.servicio.ntt.model.filter.Filter;
+import com.servicio.ntt.model.filter.QueryOperator;
 import com.servicio.ntt.model.repository.PersonRepository;
 import com.servicio.ntt.model.request.UpdatePersonRequest;
+import com.servicio.ntt.model.specifications.SpecificationBuilder;
 import com.servicio.ntt.service.PersonService;
 
 import lombok.extern.log4j.Log4j2;
@@ -23,6 +29,9 @@ public class PersonServiceImpl implements PersonService {
 
     @Autowired
     private PersonRepository personRepository;
+
+    @Autowired
+    private SpecificationBuilder<PersonEntity> specificationBuilder;
 
     @Override
     public PersonEntity savePerson(PersonEntity createPersonEntity) {
@@ -47,7 +56,7 @@ public class PersonServiceImpl implements PersonService {
         log.info(Constants.LOG_BEG);
         log.info(Constants.LOG_END);
         return personRepository.findAll(enablePagination ? PageRequest.of(page, size) : Pageable.unpaged());
-        
+
     }
 
     @Override
@@ -67,13 +76,13 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public PersonEntity editPerson(PersonEntity personEntity, UpdatePersonRequest updatePersonRequest) {
         log.info(Constants.LOG_BEG);
-        personEntity.setPrimerNombre(updatePersonRequest.getPrimerNombre());
-        personEntity.setSegundoNombre(updatePersonRequest.getSegundoNombre());
-        personEntity.setPrimerApellido(updatePersonRequest.getPrimerApellido());
-        personEntity.setSegundoApellido(updatePersonRequest.getSegundoApellido());
+        personEntity.setPrimerNombre(updatePersonRequest.getPrimerNombre().toUpperCase());
+        personEntity.setSegundoNombre(updatePersonRequest.getSegundoNombre().toUpperCase());
+        personEntity.setPrimerApellido(updatePersonRequest.getPrimerApellido().toUpperCase());
+        personEntity.setSegundoApellido(updatePersonRequest.getSegundoApellido().toUpperCase());
         personEntity.setEdad(updatePersonRequest.getEdad());
-        personEntity.setEstadoCivil(updatePersonRequest.getEstadoCivil());
-        personEntity.setEmail(updatePersonRequest.getEmail());
+        personEntity.setEstadoCivil(updatePersonRequest.getEstadoCivil().toUpperCase());
+        personEntity.setEmail(updatePersonRequest.getEmail().toLowerCase());
         personEntity.setTelefonoMovil(updatePersonRequest.getTelefonoMovil());
         personEntity.setTelefonoFijo(updatePersonRequest.getTelefonoFijo());
         personEntity.setFechaActualizacion(LocalDateTime.now());
@@ -82,6 +91,32 @@ public class PersonServiceImpl implements PersonService {
         log.info(Constants.LOG_END);
 
         return personEntity;
+    }
+
+    @Override
+    public Page<PersonEntity> recuperarUsuariosPorFiltros(Pageable pageable, String codigoPersona, String estatus,
+            String estadoCivil) {
+        log.info(Constants.LOG_BEG);
+        Page<PersonEntity> personEntityPage = null;
+        List<Filter> filters = new ArrayList<>();
+
+        if (codigoPersona != null && !codigoPersona.isEmpty()) {
+            Filter filtroCodigoPersona = Filter.builder().field(PersonConstants.CAMPO_CODIGO_PERSONA).operator(QueryOperator.LIKE).value(codigoPersona).build();
+            filters.add(filtroCodigoPersona);
+        }
+        if (estatus != null) {
+            Filter filtroEstatus = Filter.builder().field(PersonConstants.CAMPO_ESTATUS).operator(QueryOperator.LIKE).value(estatus).build();
+            filters.add(filtroEstatus);
+        }
+        if (estadoCivil != null && !estadoCivil.isEmpty()) {
+            Filter filtroEstadoCivil = Filter.builder().field(PersonConstants.CAMPO_ESTADO_CIVIL).operator(QueryOperator.LIKE).value(estadoCivil).build();
+            filters.add(filtroEstadoCivil);
+        }
+        log.info(specificationBuilder);
+        personEntityPage = personRepository.findAll(specificationBuilder.getSpecificationFromFilters(filters), pageable);
+
+        log.info(Constants.LOG_END);
+        return personEntityPage;
     }
 
 }

@@ -8,7 +8,7 @@ import com.servicio.ntt.model.entity.PersonEntity;
 import com.servicio.ntt.model.request.CreatePersonRequest;
 import com.servicio.ntt.model.request.PersonRequest;
 import com.servicio.ntt.model.request.UpdatePersonRequest;
-import com.servicio.ntt.model.response.ActualizaPersonResponse;
+import com.servicio.ntt.model.response.EditPersonResponse;
 
 @Mapper(componentModel = "spring")
 public interface PersonMapper {
@@ -20,7 +20,7 @@ public interface PersonMapper {
 
     public abstract PersonEntity requestToEntityforUpdate(UpdatePersonRequest updatePersonRequest);
 
-    public ActualizaPersonResponse entityToResponse(Optional<PersonEntity> personEntity);
+    public EditPersonResponse entityToResponse(Optional<PersonEntity> personEntity);
 
 
 }
