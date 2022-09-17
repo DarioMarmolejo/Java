@@ -59,6 +59,8 @@
 
 ## Detalles del proyecto
 
+    Los detalles especificos del proyecto se encontraran en el archivo build.gradle
+
 ### Requeridos
     Se requiere crear el diseño de base de datos para guardar información de una persona con los iguientes datos:
     • Código persona
