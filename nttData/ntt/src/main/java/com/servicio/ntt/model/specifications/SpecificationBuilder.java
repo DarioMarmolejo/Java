@@ -10,7 +10,7 @@ import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
-import com.servicio.ntt.exception.BadRequestException;
+import com.servicio.ntt.exception.custom.BadRequestException;
 import com.servicio.ntt.model.filter.Filter;
 
 import static org.springframework.data.jpa.domain.Specification.where;

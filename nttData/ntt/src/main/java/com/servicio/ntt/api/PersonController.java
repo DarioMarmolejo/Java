@@ -1,5 +1,7 @@
 package com.servicio.ntt.api;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -44,15 +46,17 @@ public class PersonController {
      *
      * @author Dario Marmolejo
      * @version 1.0.0, 14/09/2022
-     * @param primerNombre   ->
-     * @param primerApellido ->
-     * @param edad           ->
-     * @param estadoCivil    ->
+     * @param primerNombre   -> Primer nombre de la persona
+     * @param primerApellido -> apellido Paterno de la persona
+     * @param edad           -> edad mayor a 9 y menor a 99
+     * @param estadoCivil    -> estado civil de la persona(soltero,casado,
+     *                       divorciado, separación en proceso judicial, viudo y
+     *                       concubinato)
      * @param email          -> contacto del usuario
      */
-    @PostMapping(value = "/save", produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<PersonResponse> savePerson(@RequestBody CreatePersonRequest createPersonRequest) {
+    public ResponseEntity<PersonResponse> savePerson( @RequestBody CreatePersonRequest createPersonRequest) {
         log.info(Constants.LOG_BEG);
         ResponseEntity<PersonResponse> response = null;
         PersonResponse personResponse = personFacade.create(createPersonRequest);
@@ -129,16 +133,28 @@ public class PersonController {
      * @version 1.0.0, 15/09/2022
      * @param estatus -> Identificador para busqueda por filtro.
      */
-    @GetMapping(value = "/findByStatus")
-    public ResponseEntity<PersonRequest> findByfindByStatus() {
+    @GetMapping(value = "/findWithFilters/estado", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ConsultarPersonResponse> findWithFiltersAll(
+            @RequestParam(required = false, name = "codigoPersona") String codigoPersona,
+            @RequestParam(required = false, name = "estado")String estado,
+            @RequestParam(required = false, name = "estadoCivil") String estadoCivil,
+            @RequestParam(required = false, name = "pagina") Integer pagina,
+            @RequestParam(required = false, name = "registros") Integer registros,
+            @RequestParam(required = false, name = "columna") String columna,
+            @RequestParam(required = false, name = "orden") String orden) {
         log.info(Constants.LOG_BEG);
+
+        ConsultarPersonResponse response = null;
+        response = personFacade.findWithFiltersAll(codigoPersona, estadoCivil,estado, pagina, registros, columna, orden);
+        ResponseEntity<ConsultarPersonResponse> result = new ResponseEntity<>(response, HttpStatus.OK);
+
         log.info(Constants.LOG_END);
-        return null;
+        return result;
     }
 
-
     /**
-     * @description Metodo para creear una busqueda por filtros de codigoPersona o EstadoCivil
+     * @description Metodo para creear una busqueda por filtros de codigoPersona o
+     *              EstadoCivil
      *
      * @author Dario Marmolejo
      * @version 1.0.0, 15/09/2022
@@ -156,7 +172,6 @@ public class PersonController {
     @GetMapping(value = "/findWithFilters", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ConsultarPersonResponse> findWithFilters(
             @RequestParam(required = false, name = "codigoPersona") String codigoPersona,
-            @RequestParam(required = false, name = "estatus") String estatus,
             @RequestParam(required = false, name = "estadoCivil") String estadoCivil,
             @RequestParam(required = false, name = "pagina") Integer pagina,
             @RequestParam(required = false, name = "registros") Integer registros,
@@ -165,7 +180,7 @@ public class PersonController {
         log.info(Constants.LOG_BEG);
 
         ConsultarPersonResponse response = null;
-        response = personFacade.findWithFilters(codigoPersona, estatus, estadoCivil,pagina, registros, columna,orden);
+        response = personFacade.findWithFilters(codigoPersona, estadoCivil, pagina, registros, columna, orden);
         ResponseEntity<ConsultarPersonResponse> result = new ResponseEntity<>(response, HttpStatus.OK);
 
         log.info(Constants.LOG_END);

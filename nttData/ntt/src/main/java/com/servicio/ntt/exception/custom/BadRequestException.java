@@ -1,4 +1,4 @@
-package com.servicio.ntt.exception;
+package com.servicio.ntt.exception.custom;
 
 import java.util.Collections;
 import java.util.List;

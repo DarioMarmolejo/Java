@@ -66,5 +66,5 @@ public class PersonEntity {
 
     @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion;
-    
+
 }

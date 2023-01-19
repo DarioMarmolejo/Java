@@ -3,16 +3,9 @@ package com.servicio.ntt.exception;
 public class ServiceException extends java.lang.RuntimeException {
 
     private static final long serialVersionUID = 1L;
-/*
-    private static final java.lang.String CAUSED_BY = "\nCausado por: ";
 
-    private java.lang.Throwable cause;
-
-    private java.lang.String errorCode;
-
-    private org.springframework.http.HttpStatus httpStatus;
-*/
     public ServiceException() {
+        super();
     }
 
     public ServiceException(java.lang.String message) {

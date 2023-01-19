@@ -20,5 +20,9 @@ public interface PersonService {
 
     public PersonEntity editPerson(PersonEntity personEntity, UpdatePersonRequest updatePersonRequest);
 
-    public Page<PersonEntity> recuperarUsuariosPorFiltros(Pageable pageable, String codigoPersona, String estatus, String estadoCivil);
+    public Page<PersonEntity> recuperarUsuariosPorFiltros(Pageable pageable, String codigoPersona, String estadoCivil);
+
+    public Page<PersonEntity> recuperarUsuariosPorFiltrosAll(Pageable pageable, String codigoPersona,String estado, String estadoCivil);
+
+
 }

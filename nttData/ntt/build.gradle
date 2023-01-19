@@ -22,6 +22,8 @@ repositories {
 ext{
 	orgOpenapiVersion = '1.6.11'
 	orgMapstructVersion = '1.5.2.Final'
+	orgCommonsValidator = '1.7'
+
 }
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -33,6 +35,8 @@ dependencies {
 
 	implementation "org.springdoc:springdoc-openapi-ui:${orgOpenapiVersion}"
 	implementation "org.mapstruct:mapstruct:${orgMapstructVersion}"
+	implementation "commons-validator:commons-validator:${orgCommonsValidator}"
+
 
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	runtimeOnly 'org.postgresql:postgresql'
